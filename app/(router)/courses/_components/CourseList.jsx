@@ -41,11 +41,19 @@ function CourseList() {
       </div>
       {/* Display Course List */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 mt-4">
-      {courseList.map((item) => (
+      {courseList?.length>0 ? courseList.map((item) => (
           <div key={item.id}>
             <CourseItem course={item} />
           </div>
-        ))}
+        ))
+        :
+        [1,2,3,4,5,6,7].map((item,index)=>(
+          <div key={index} className="w-full h-[240px]
+          rounded-xl m-2 bg-slate-200 animate-pulse">
+
+          </div>
+        ))
+      }
       </div>
     </div>
   );

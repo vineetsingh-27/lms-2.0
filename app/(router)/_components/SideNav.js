@@ -1,6 +1,6 @@
 "use client"
 
-import { BadgeIcon, BookOpen, GraduationCap, LayoutGrid, Mail, Store } from "lucide-react";
+import { BadgeIcon, BookOpen, GraduationCap, LayoutGrid, Mail } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

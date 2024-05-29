@@ -1,43 +1,59 @@
 "use client"
 
-import { BadgeIcon, BookOpen, GraduationCap, LayoutGrid, Mail } from "lucide-react";
+import { useUser } from "@clerk/nextjs";;
+import { BadgeIcon, BookOpen, GraduationCap, LayoutDashboard, LayoutGrid, Mail } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect } from "react";
 
 function SideNav() {
+    const { user } = useUser()
     const menu = [
+        {
+            id: 6,
+            name: "Dashboard",
+            icon: LayoutDashboard,
+            path:'/dashboard',
+            auth: user
+        },
         {
             id: 1,
             name: "All Courses",
             icon: BookOpen,
-            path:'/courses'
+            path:'/courses',
+            auth: true
         },
         {
             id: 2,
             name: "Store",
             icon: LayoutGrid,
-            path:'/store'
+            path:'/store',
+            auth: true
         },
         {
             id: 3,
             name: "Membership",
             icon: BadgeIcon,
-            path:'/membership'
+            path:'/membership',
+            auth: true
         },
         {
             id: 4,
             name: "Be Instructor",
             icon: GraduationCap,
-            path:'/instructor'
+            path:'/instructor',
+            auth: true
         },
         {
-            id: 4,
+            id: 5,
             name: "Newsletter",
             icon: Mail,
-            path:'/newsletter'
+            path:'/newsletter',
+            auth: true
         },
+        
+
     ];
 
     const path=usePathname();
@@ -50,7 +66,7 @@ function SideNav() {
             <hr className="mt-7"></hr>
             {/* Menu list */}
             <div className="mt-8">
-                {menu.map((item, index) => (
+                {menu.map((item, index) => item.auth&&(
                     <Link href={item.path}>
                     <div
                         className={`group flex gap-3 

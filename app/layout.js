@@ -1,4 +1,6 @@
-import { Inter, Outfit } from "next/font/google";
+import { Outfit } from "next/font/google";
+import { ClerkProvider, SignedOut, SignedIn, UserButton, SignInButton } from "@clerk/nextjs";
+
 import "./globals.css";
 
 const outfit = Outfit({ subsets: ["latin"] });
@@ -10,8 +12,19 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={outfit.className}>{children}</body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={outfit.className}>{children}
+        {/* <header>
+            <SignedOut>
+              <SignInButton />
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </header> */}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

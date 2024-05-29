@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 
 function CourseEnrollSection() {
-  const membership = true;
+  const membership = false;
   return (
     <div className="p-3 text-center rounded-sm bg-primary">
       <h2 className="text-[22px] font-bold text-white">Enroll to the course</h2>

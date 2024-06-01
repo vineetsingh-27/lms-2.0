@@ -5,31 +5,50 @@ import { useUser } from '@clerk/nextjs'
 import React, { useEffect, useState } from 'react'
 import CourseVideoDescription from '../../course-preview/[courseId]/_components/CourseVideoDescription';
 import CourseContentSection from '../../course-preview/[courseId]/_components/CourseContentSection';
+import { toast } from 'sonner';
 
 function WatchCourse({ params }) {
 
   const { user } = useUser();
   const [courseInfo, setCourseInfo] = useState([])
   const [activeChapterIndex, setActiveChapterIndex] = useState(0)
+  const [completedChapter, setCompletedChapter] = useState([])
 
   useEffect(() => {
     params && user && getUserEnrolledCourseDetail()
   }, [params && user])
+
   // Get User Enrolled Course Details by ID and Email
   const getUserEnrolledCourseDetail = () => {
     GlobalApi.getUserEnrolledCourseDetails(params.enrollId,
       user.primaryEmailAddress.emailAddress)
       .then(resp => {
+        setCompletedChapter(resp.userEnrollCourses[0].completedChapter);
         setCourseInfo(resp.userEnrollCourses[0].courseList);
       })
   }
+
+
+  // Save Completed Chapter Id
+  const onChapterComplete= (chapterId) =>{
+    GlobalApi.markChapterCompleted(params.enrollId, chapterId)
+    .then(resp =>{
+      console.log(resp);
+      if (resp) {
+        toast('Chapter Marked as Completed!')
+        getUserEnrolledCourseDetail();
+      }
+    })
+  }
+
   return courseInfo.name&&(
     <div className='grid grid-cols-1 md:grid-cols-3 p-5 gap-3'>
       {/* Title, Video, Description */}
       <div className='col-span-2 bg-white p-3'>
         <CourseVideoDescription courseInfo={courseInfo}
         activeChapterIndex={activeChapterIndex}
-        watchMode={true} />
+        watchMode={true}
+        setChapterCompleted={(chapterId)=>onChapterComplete(chapterId)} />
       </div>
 
       {/* Course Content */}
@@ -37,6 +56,7 @@ function WatchCourse({ params }) {
         <CourseContentSection courseInfo={courseInfo}
           isUserAlreadyEnrolled={true}
           watchMode={true} 
+          completedChapter={completedChapter}
           setActiveChapterIndex={(index) => setActiveChapterIndex(index)}/>
       </div>
     </div>
